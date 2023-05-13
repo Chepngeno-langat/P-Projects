@@ -26,9 +26,33 @@ def encrypt(message):
 
     return cipher
 
+def decrypt(message):
+    message += ' '
+
+    decipher = ''
+    citext = ''
+    for letter in message:
+        if letter != ' ':
+            i = 0
+            citext += letter
+
+        else:
+            i += 1
+
+            if i == 2:
+                decipher += ' '
+            else:
+                decipher += list(MORSE_CODE_DICT.keys())[list(MORSE_CODE_DICT.values()).index(citext)]
+                citext = ''
+    return decipher
+
 def main():
     message = 'Hi I am Karen'
     result = encrypt(message.upper())
     print(result)
+
+    message2 = '.... ..  ..  .- --  -.- .- .-. . -. '
+    result2 = decrypt(message2)
+    print(result2)
 
 main()
