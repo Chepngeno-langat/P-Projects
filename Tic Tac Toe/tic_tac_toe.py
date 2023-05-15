@@ -37,4 +37,79 @@ def player_input():
         else:
             player1 = input("Please pick a marker 'X' or 'O'")
 
-player_input()
+def place_marker(board, marker, position):
+    board[position] = marker
+    return board
+
+def space_check(board,position):
+    return board[position] == '#'
+
+def player_choice(board):
+    choice = input("Please select an empty space between 1 and 9: ")
+    while not space_check(board, int(choice)):
+        choice = input("This space isn't free. Please choose between 1 and 9")
+    return choice
+
+def full_board_check(board):
+    return len([x for x in board if x == '#']) == 1
+
+def win_check(board, mark):
+    if board[1] == board[2] == board[3] == mark:
+        return True
+    if board[4] == board[5] == board[6] == mark:
+        return True
+    if board[7] == board[8] == board[9] == mark:
+        return True
+    if board[1] == board[4] == board[7] == mark:
+        return True
+    if board[2] == board[5] == board[8] == mark:
+        return True
+    if board[3] == board[6] == board[9] == mark:
+        return True
+    if board[1] == board[5] == board[9] == mark:
+        return True
+    if board[3] == board[5] == board[7] == mark:
+        return True
+
+def replay():
+    playAgain = input("Do you want to play again (y/n) ? ")
+    if playAgain.lower() == 'y':
+        return True
+    if playAgain.lower() == 'n':
+        return False
+
+def main():
+    print('Welcome to Tic Tac Toe!')
+    i = 1
+    # Choose your side
+    players = player_input()
+    # Empty board init
+    board = ['#'] * 10
+    display_board(board)
+    while True:
+        # Set the game up here
+        game_on = full_board_check(board)
+        while not game_on:
+            # Player to choose where to put the mark
+            position = player_choice(board)
+            # Who's playin ? Choose the marker
+            if i % 2 == 0:
+                marker = players[1]
+            else:
+                marker = players[0]
+            # Play !
+            place_marker(board, marker, int(position))
+            # Check the board
+            display_board(board)
+            i += 1
+            if win_check(board, marker):
+                print("You won !")
+                break
+            game_on = full_board_check(board)
+        if not replay():
+            break
+        else:
+            i = 1
+            # Choose your side
+
+main()
